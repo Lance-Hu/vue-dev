@@ -8,7 +8,7 @@
 // 如果计时器没有在 2 秒内清除，则判定为一次长按，可以执行关联的函数。
 // 在移动端要考虑 touchstart，touchend 事件
 export default {
-  bind: function(el, binding, vNode) {
+  bind: function(el, binding) {
     if (typeof binding.value !== 'function') {
       throw new Error('callback must be a function')
     }

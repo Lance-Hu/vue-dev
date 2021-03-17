@@ -12,26 +12,26 @@ const LazyAjax = {
   install(Vue) {
     Vue.directive('LazyAjax', {
       bind(el, binding) {
-        LazyAjax.init(el, binding.value)
+        if (typeof binding.value !== 'function') {
+          throw new Error('callback must be a function')
+        }
+        // 做一个标记
+        el.setAttribute('data-ajax', 'true')
       },
-      inserted(el) {
+      inserted(el, binding) {
         if (IntersectionObserver) {
-          LazyAjax.observe(el)
+          LazyAjax.observe(el, binding)
         }
       }
     })
   },
-  // 初始化
-  init(el, val) {
-    el.setAttribute('data-ajax', val)
-  },
   // 利用IntersectionObserver监听el
-  observe(el) {
+  observe(el, binding) {
     var io = new IntersectionObserver((entries) => {
-      const realAjax = el.dataset.ajax
+      const flag = el.dataset.ajax
       if (entries[0].isIntersecting) {
-        if (realAjax) {
-          realAjax()
+        if (flag) {
+          binding.value()
           el.removeAttribute('data-ajax')
         }
       }
