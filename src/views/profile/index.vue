@@ -52,7 +52,11 @@ export default {
     ])
   },
   created() {
+    console.log('created')
     this.getUser()
+  },
+  activated() {
+    console.log(this.$route)
   },
   methods: {
     getUser() {
